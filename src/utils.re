@@ -1,0 +1,1 @@
+let rs = React.string;
