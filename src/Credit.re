@@ -97,16 +97,9 @@ let make = (~value) => {
         {"Add Credit" |> string}
       </button>
     </div>
-    <div>
-      {Belt.List.mapWithIndex(state.moneyToAdd, (i, c) =>
-         <MoneyRender
-           key={"coins" ++ string_of_int(i)}
-           onClick={_m => dispatcher(RemoveMoney(i))}
-           money=c
-         />
-       )
-       |> Array.of_list
-       |> array}
-    </div>
+    <AmmountToAdd
+      moneyList={state.moneyToAdd}
+      onClick={i => dispatcher(RemoveMoney(i))}
+    />
   </div>;
 };
