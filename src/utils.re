@@ -1,1 +1,1 @@
-let rs = React.string;
+let valueOfEvent = event => ReactEvent.Form.target(event)##value;
