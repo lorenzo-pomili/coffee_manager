@@ -1,4 +1,5 @@
 open Utils;
+open React;
 [@react.component]
 let make = (~moneyList, ~onClick, ~onConfirm) =>
   <div>
@@ -11,5 +12,7 @@ let make = (~moneyList, ~onClick, ~onConfirm) =>
      )
      |> Array.of_list
      |> React.array}
-    <div> <button onClick={_e => onConfirm()}> {s("Confirm")} </button> </div>
+    <div>
+      <button onClick={_e => onConfirm()}> {"Confirm" |> string} </button>
+    </div>
   </div>;
