@@ -1,4 +1,3 @@
-open Utils;
 open React;
 [@react.component]
 let make = (~moneyList, ~onClick, ~onConfirm) =>
