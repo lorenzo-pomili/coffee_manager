@@ -13,8 +13,8 @@ let coinList = [
   Eur2,
 ];
 
-// let peaperList = [Eur5, Eur10, Eur20, Eur50, Eur100, Eur200, Eur500];
-let peaperList = [];
+let peaperList = [Eur5, Eur10, Eur20, Eur50, Eur100, Eur200, Eur500];
+// let peaperList = [];
 
 type state = {
   currentValue: float,
@@ -59,24 +59,8 @@ let make = (~value) => {
       {currentValue: value, valueToAdd: 0., moneyToAdd: []},
     );
   <div>
-    {Belt.List.mapWithIndex(coinList, (i, c) =>
-       <MoneyRender
-         key={"coins" ++ string_of_int(i)}
-         onClick={m => dispatcher(AddMoney(m))}
-         money={Money.Coin(c)}
-       />
-     )
-     |> Array.of_list
-     |> array}
-    {Belt.List.mapWithIndex(peaperList, (i, p) =>
-       <MoneyRender
-         key={"peapers_" ++ string_of_int(i)}
-         onClick={m => dispatcher(AddMoney(m))}
-         money={Money.Peaper(p)}
-       />
-     )
-     |> Array.of_list
-     |> array}
+    <PeaperAccordion peaperList onAdd={m => dispatcher(AddMoney(m))} />
+    <CoinAccordion coinList onAdd={m => dispatcher(AddMoney(m))} />
     <div>
       {"You are adding " |> string}
       {state.valueToAdd->Js.Float.toFixedWithPrecision(~digits=2) |> string}
