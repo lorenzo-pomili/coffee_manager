@@ -14,7 +14,6 @@ let coinList = [
 ];
 
 let peaperList = [Eur5, Eur10, Eur20, Eur50, Eur100, Eur200, Eur500];
-// let peaperList = [];
 
 type state = {
   currentValue: float,
