@@ -99,6 +99,7 @@ let make = (~value) => {
     </div>
     <AmmountToAdd
       moneyList={state.moneyToAdd}
+      onConfirm={() => dispatcher(Add)}
       onClick={i => dispatcher(RemoveMoney(i))}
     />
   </div>;

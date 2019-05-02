@@ -1,5 +1,6 @@
+open Utils;
 [@react.component]
-let make = (~moneyList, ~onClick) =>
+let make = (~moneyList, ~onClick, ~onConfirm) =>
   <div>
     {Belt.List.mapWithIndex(moneyList, (i, m) =>
        <MoneyRender
@@ -10,4 +11,5 @@ let make = (~moneyList, ~onClick) =>
      )
      |> Array.of_list
      |> React.array}
+    <div> <button onClick={_e => onConfirm()}> {s("Confirm")} </button> </div>
   </div>;
