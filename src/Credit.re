@@ -19,13 +19,16 @@ type state = {
   currentValue: float,
   moneyToAdd: list(Money.t),
   valueToAdd: float,
+  valueToRemove: float,
 };
 
 type action =
   | ChangeImportToAdd(float)
   | AddMoney(Money.t)
+  | RemoveValue(float)
   | RemoveMoney(int)
-  | Add;
+  | Add
+  | Remove;
 
 [@react.component]
 let make = (~value) => {
@@ -34,6 +37,10 @@ let make = (~value) => {
       (state, action) =>
         switch (action) {
         | ChangeImportToAdd(v) => {...state, valueToAdd: v}
+        | RemoveValue(v) => {
+            ...state,
+            valueToRemove: state.valueToRemove +. v,
+          }
         | AddMoney(m) =>
           let newMoneyToAdd = [m, ...state.moneyToAdd];
           {
@@ -50,12 +57,23 @@ let make = (~value) => {
             valueToAdd: valueOfList(newMoneyToAdd),
           };
         | Add => {
+            ...state,
             moneyToAdd: [],
             currentValue: state.currentValue +. state.valueToAdd,
             valueToAdd: 0.,
           }
+        | Remove => {
+            ...state,
+            currentValue: state.currentValue -. state.valueToRemove,
+            valueToRemove: 0.,
+          }
         },
-      {currentValue: value, valueToAdd: 0., moneyToAdd: []},
+      {
+        currentValue: value,
+        valueToAdd: 0.,
+        valueToRemove: 0.,
+        moneyToAdd: [],
+      },
     );
   <div>
     <PeaperAccordion peaperList onAdd={m => dispatcher(AddMoney(m))} />
@@ -64,6 +82,16 @@ let make = (~value) => {
       {"You are adding " |> string}
       {state.valueToAdd->Js.Float.toFixedWithPrecision(~digits=2) |> string}
       {{js|€|js} |> string}
+    </div>
+    <div>
+      {"You are consuming " |> string}
+      {state.valueToRemove->Js.Float.toFixedWithPrecision(~digits=2) |> string}
+      {{js|€|js} |> string}
+      <button
+        style={ReactDOMRe.Style.make(~marginLeft="10px", ())}
+        onClick={_e => dispatcher(Remove)}>
+        {"Consume" |> string}
+      </button>
     </div>
     <div>
       {"You have " |> string}
@@ -79,6 +107,14 @@ let make = (~value) => {
       <button onClick={_ => dispatcher(Add)}>
         {"Add Credit" |> string}
       </button>
+    </div>
+    <div
+      style={ReactDOMRe.Style.make(
+        ~marginTop="10px",
+        ~marginBottom="10px",
+        (),
+      )}>
+      <Pod onClick={_ => dispatcher(RemoveValue(0.5))} />
     </div>
     <AmmountToAdd
       moneyList={state.moneyToAdd}
